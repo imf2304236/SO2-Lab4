@@ -19,6 +19,7 @@ public class Room
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
     private boolean searched;
+    private boolean haunted;
 
     /**
      * Create a room described "description". Initially, it has
@@ -31,6 +32,7 @@ public class Room
         this.description = description;
         exits = new HashMap<>();
         searched = false;
+        haunted = false;
     }
 
     /**
@@ -95,6 +97,14 @@ public class Room
 
     public void setSearched(boolean bool) {
         searched = bool;
+    }
+
+    public void setHaunted(boolean bool) {
+        haunted = bool;
+    }
+
+    public boolean getHaunted() {
+        return haunted;
     }
 }
 

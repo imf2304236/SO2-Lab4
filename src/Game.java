@@ -21,6 +21,7 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private Random randomGenerator;
+    private int ghostsCaptured;
         
     /**
      * Create the game and initialise its internal map.
@@ -30,7 +31,7 @@ public class Game
         createRooms();
         parser = new Parser();
         randomGenerator = new Random();
-
+        ghostsCaptured = 0;
     }
 
     /**
@@ -122,8 +123,11 @@ public class Game
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
+        } else if (commandWord.equals("search")) {
+            search();
+        } else if (commandWord.equals("capture")) {
+            captureGhost();
         }
-        // TODO: 16/05/17 Add "search" and "capture" commands 
         // else command not recognised.
         return wantToQuit;
     }
@@ -191,27 +195,41 @@ public class Game
      * ""
      * @return
      */
-    private boolean search()
+    private void search()
     {
         if (currentRoom.getSearched() == false) {
             currentRoom.setSearched(true);
             int random = randomGenerator.nextInt(50);
 
-            if (random >= 0 && random <= 25) {
+            if (random >= 0 && random <= 15) {
+                currentRoom.setHaunted(true);
                 System.out.println("A spooky ghost appears! Quick capture it!");
-                return true;
             } else {
                 System.out.println("The coast is clear. No ghosts in this room. For now...");
-                return false;
+                currentRoom.setHaunted(false);
             }
         } else {
-            System.out.println("You already searched this room! Maybe try again a bit later..");
-            return false;
+            System.out.println("You already searched this room. Maybe try again a bit later..");
         }
     }
 
-    /*private boolean captureGhost()
+    private void captureGhost()
     {
+        if (currentRoom.getHaunted()) {
+            int random = randomGenerator.nextInt(50);
 
-    }*/
+            if (random >= 0 && random <= 10) {
+                currentRoom.setHaunted(false);
+                ghostsCaptured++;
+                System.out.println("Nice job! You snagged the ghost!");
+            } else {
+                currentRoom.setHaunted(false);
+                System.out.println("The spirit escaped before you could capture it!");
+                System.out.println("You'll have to keep searching and try again.");
+            }
+        } else {
+            System.out.println("This room doesn't appear to be haunted.");
+            System.out.println("Are you sure you searched this room already?");
+        }
+    }
 }
