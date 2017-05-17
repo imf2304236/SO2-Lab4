@@ -14,10 +14,13 @@
  * @version 2016.02.29
  */
 
+import java.util.Random;
+
 public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Random randomGenerator;
         
     /**
      * Create the game and initialise its internal map.
@@ -26,6 +29,8 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        randomGenerator = new Random();
+
     }
 
     /**
@@ -161,6 +166,7 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
+            currentRoom.setSearched(false);
             System.out.println(currentRoom.getLongDescription());
         }
     }
@@ -180,4 +186,32 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
+
+    /**
+     * ""
+     * @return
+     */
+    private boolean search()
+    {
+        if (currentRoom.getSearched() == false) {
+            currentRoom.setSearched(true);
+            int random = randomGenerator.nextInt(50);
+
+            if (random >= 0 && random <= 25) {
+                System.out.println("A spooky ghost appears! Quick capture it!");
+                return true;
+            } else {
+                System.out.println("The coast is clear. No ghosts in this room. For now...");
+                return false;
+            }
+        } else {
+            System.out.println("You already searched this room! Maybe try again a bit later..");
+            return false;
+        }
+    }
+
+    /*private boolean captureGhost()
+    {
+
+    }*/
 }
