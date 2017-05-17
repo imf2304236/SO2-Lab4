@@ -1,5 +1,6 @@
 import java.util.Set;
 import java.util.HashMap;
+import java.util.Random;
 /**
  * Class Room - a room in an adventure game.
  *
@@ -18,6 +19,7 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
+    private Random randomGenerator;
     private boolean searched;
     private boolean haunted;
 
@@ -31,6 +33,7 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        randomGenerator = new Random();
         searched = false;
         haunted = false;
     }
@@ -91,20 +94,34 @@ public class Room
         return exits.get(direction);
     }
 
-    public boolean getSearched() {
-        return searched;
+    /**
+     * ""
+     * @return
+     */
+    public void search()
+    {
+        if (searched == false) {
+            searched = true;
+            int random = randomGenerator.nextInt(50);
+
+            if (random >= 0 && random <= 15) {
+                haunted = true;
+                System.out.println("A spooky ghost appears! Quick capture it!");
+            } else {
+                System.out.println("The coast is clear. No ghosts in this room. For now...");
+                haunted = false;
+            }
+        } else {
+            System.out.println("You already searched this room. Maybe try again a bit later..");
+        }
     }
 
-    public void setSearched(boolean bool) {
-        searched = bool;
-    }
+    public boolean getSearched() { return searched; }
 
-    public void setHaunted(boolean bool) {
-        haunted = bool;
-    }
+    public void setSearched(boolean bool) { searched = bool; }
 
-    public boolean getHaunted() {
-        return haunted;
-    }
+    public void setHaunted(boolean bool) { haunted = bool; }
+
+    public boolean getHaunted() { return haunted; }
 }
 

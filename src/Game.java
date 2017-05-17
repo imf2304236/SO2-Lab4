@@ -1,3 +1,4 @@
+import java.util.Random;
 /**
  *  This class is the main class of the "Ghostbusters" application.
  *  "ghostbusters" is a very simple, text based adventure game.  Users
@@ -14,14 +15,12 @@
  * @version 2016.02.29
  */
 
-import java.util.Random;
-
 public class Game
 {
     private Parser parser;
     private Room currentRoom;
-    private Random randomGenerator;
     private int ghostsCaptured;
+    private Random randomGenerator;
         
     /**
      * Create the game and initialise its internal map.
@@ -30,8 +29,8 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        randomGenerator = new Random();
         ghostsCaptured = 0;
+        randomGenerator = new Random();
     }
 
     /**
@@ -79,11 +78,12 @@ public class Game
         // execute them until the game is over.
                 
         boolean finished = false;
+        
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing.  Good bye."); // TODO: 17/05/17 Change finished message 
     }
 
     /**
@@ -124,7 +124,7 @@ public class Game
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         } else if (commandWord.equals("search")) {
-            search();
+            currentRoom.search();
         } else if (commandWord.equals("capture")) {
             captureGhost();
         }
@@ -191,29 +191,7 @@ public class Game
         }
     }
 
-    /**
-     * ""
-     * @return
-     */
-    private void search()
-    {
-        if (currentRoom.getSearched() == false) {
-            currentRoom.setSearched(true);
-            int random = randomGenerator.nextInt(50);
-
-            if (random >= 0 && random <= 15) {
-                currentRoom.setHaunted(true);
-                System.out.println("A spooky ghost appears! Quick capture it!");
-            } else {
-                System.out.println("The coast is clear. No ghosts in this room. For now...");
-                currentRoom.setHaunted(false);
-            }
-        } else {
-            System.out.println("You already searched this room. Maybe try again a bit later..");
-        }
-    }
-
-    private void captureGhost()
+    private boolean captureGhost()
     {
         if (currentRoom.getHaunted()) {
             int random = randomGenerator.nextInt(50);
@@ -222,14 +200,22 @@ public class Game
                 currentRoom.setHaunted(false);
                 ghostsCaptured++;
                 System.out.println("Nice job! You snagged the ghost!");
+
+                if (ghostsCaptured == 5) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 currentRoom.setHaunted(false);
                 System.out.println("The spirit escaped before you could capture it!");
                 System.out.println("You'll have to keep searching and try again.");
+                return false;
             }
         } else {
             System.out.println("This room doesn't appear to be haunted.");
-            System.out.println("Are you sure you searched this room already?");
+            System.out.println("Have you searched this room yet?");
+            return false;
         }
     }
 }
