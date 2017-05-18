@@ -1,4 +1,7 @@
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 /**
  *  This class is the main class of the "Ghostbusters" application.
  *  "ghostbusters" is a very simple, text based adventure game.  Users
@@ -18,6 +21,7 @@ import java.util.Random;
 public class Game
 {
     private Parser parser;
+    private ArrayList<Room> rooms;
     private Room currentRoom;
     private int ghostsCaptured;
     private Random randomGenerator;
@@ -27,6 +31,7 @@ public class Game
      */
     public Game()
     {
+        rooms = new ArrayList<Room>();
         createRooms();
         parser = new Parser();
         ghostsCaptured = 0;
@@ -85,6 +90,15 @@ public class Game
         gameRoom.setExit("north", childsRoom);
         gameRoom.setExit("east", basement);
 
+        rooms.add(foyer);
+        rooms.add(diningHall);
+        rooms.add(library);
+        rooms.add(childsRoom);
+        rooms.add(kitchen);
+        rooms.add(ballroom);
+        rooms.add(gallery);
+        rooms.add(basement);
+        rooms.add(gameRoom);
 
         currentRoom = foyer;  // start game in the foyer
     }
