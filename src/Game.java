@@ -38,7 +38,7 @@ public class Game
      */
     private void createRooms()
     {
-        Room foyer, diningHall, library, childsRoom, kitchen;
+        Room foyer, diningHall, library, childsRoom, kitchen, ballroom, gallery, basement, gameRoom;
       
         // create the rooms
         foyer = new Room("foyer of the spooky mansion");
@@ -46,22 +46,44 @@ public class Game
         library = new Room("in the family library");
         childsRoom = new Room("in a child's bedroom");
         kitchen = new Room("in the kitchen");
+        ballroom = new Room("in the ballroom");
+        gallery = new Room("in the gallery");
+        basement = new Room("in the basement");
+        gameRoom = new Room("in the game room");
+
         
         // initialise room exits
         foyer.setExit("east", diningHall);
         foyer.setExit("south", kitchen);
         foyer.setExit("west", library);
 
+        diningHall.setExit("south", ballroom);
         diningHall.setExit("west", foyer);
 
         library.setExit("east", foyer);
         library.setExit("south", childsRoom);
 
         childsRoom.setExit("north", library);
-        childsRoom.setExit("east", kitchen);
+        childsRoom.setExit("east", gallery);
 
-        kitchen.setExit("north", foyer);
-        kitchen.setExit("west", childsRoom);
+        kitchen.setExit("north", ballroom);
+        kitchen.setExit("west", basement);
+
+        ballroom.setExit("north", diningHall);
+        ballroom.setExit("south", kitchen);
+        ballroom.setExit("west", gallery);
+
+        gallery.setExit("north", foyer);
+        gallery.setExit("east", ballroom);
+        gallery.setExit("south", basement);
+        gallery.setExit("west", childsRoom);
+
+        basement.setExit("north", gallery);
+        basement.setExit("east", kitchen);
+        basement.setExit("west", gameRoom);
+
+        gameRoom.setExit("north", childsRoom);
+        gameRoom.setExit("east", basement);
 
 
         currentRoom = foyer;  // start game in the foyer
