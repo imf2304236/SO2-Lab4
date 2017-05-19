@@ -6,12 +6,12 @@ public class Ghost {
     private Boolean hidden;
     private Boolean captured;
 
-    public void Ghost() {
+    public Ghost() {
         this.hidden = true;
         this.captured = false;
     }
 
-    public void Ghost(Room currentRoom) {
+    public Ghost(Room currentRoom) {
         this.currentRoom = currentRoom;
         this.hidden = true;
         this.captured = false;
