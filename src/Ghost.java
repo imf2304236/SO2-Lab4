@@ -22,6 +22,14 @@ public class Ghost {
         this.hidden = hidden;
     }
 
+    public Room getCurrentRoom() {
+        return this.currentRoom;
+    }
+
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
+    }
+
     public Boolean getCaptured() {
         return captured;
     }
