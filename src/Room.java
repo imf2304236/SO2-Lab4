@@ -101,16 +101,12 @@ public class Room
     public void search()
     {
         if (searched == false) {
-            searched = true;
-            int random = randomGenerator.nextInt(49);
-
-            if (random >= 0 && random <= 14) {
-                haunted = true;
+            if (haunted) {
                 System.out.println("A spooky ghost appears! Quick capture it!");
             } else {
                 System.out.println("The coast is clear. No ghosts in this room. For now...");
-                haunted = false;
             }
+            searched = true;
         } else {
             System.out.println("You already searched this room. Maybe try again a bit later..");
         }

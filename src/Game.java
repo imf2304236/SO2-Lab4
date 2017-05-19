@@ -111,15 +111,19 @@ public class Game
      * TODO: Write javadoc comment
      */
     private void createGhosts() {
-        for (int i=0; i<(ghostsToCapture-1); i++) {
+        for (int i=0; i<ghostsToCapture; i++) {
             Ghost ghostI = new Ghost();
             int roomIndex = -1;
+            Room roomToHaunt;
 
             do {
                 roomIndex = randomGenerator.nextInt(rooms.size() - 1);
             } while (rooms.get(roomIndex).getHaunted());
 
-            ghostI.setCurrentRoom(rooms.get(roomIndex));
+            roomToHaunt = rooms.get(roomIndex);
+
+            ghostI.setCurrentRoom(roomToHaunt);
+            roomToHaunt.setHaunted(true);
             ghosts.add(ghostI);
         }
     }
