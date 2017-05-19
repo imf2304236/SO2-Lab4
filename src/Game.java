@@ -22,8 +22,10 @@ public class Game
 {
     private Parser parser;
     private ArrayList<Room> rooms;
+    private ArrayList<Ghost> ghosts;
     private Room currentRoom;
     private int ghostsCaptured;
+    private int ghostsToCapture;
     private Random randomGenerator;
         
     /**
@@ -31,11 +33,14 @@ public class Game
      */
     public Game()
     {
-        rooms = new ArrayList<Room>();
-        createRooms();
         parser = new Parser();
+        rooms = new ArrayList<Room>();
+        ghosts = new ArrayList<Ghost>();
         ghostsCaptured = 0;
+        ghostsToCapture = 5;
         randomGenerator = new Random();
+        createRooms();
+        createGhosts();
     }
 
     /**
@@ -100,6 +105,23 @@ public class Game
         rooms.add(gameRoom);
 
         currentRoom = foyer;  // start game in the foyer
+    }
+
+    /**
+     * TODO: Write javadoc comment
+     */
+    private void createGhosts() {
+        for (int i=0; i<(ghostsToCapture-1); i++) {
+            Ghost ghostI = new Ghost();
+            int roomIndex = -1;
+
+            do {
+                roomIndex = randomGenerator.nextInt(rooms.size() - 1);
+            } while (rooms.get(roomIndex).getHaunted());
+
+            ghostI.setCurrentRoom(rooms.get(roomIndex));
+            ghosts.add(ghostI);
+        }
     }
 
     /**
@@ -236,7 +258,7 @@ public class Game
                 ghostsCaptured++;
                 System.out.println("Nice job! You snagged the ghost!");
 
-                if (ghostsCaptured == 5) {
+                if (ghostsCaptured == ghostsToCapture) {
                     return true;
                 } else {
                     return false;
