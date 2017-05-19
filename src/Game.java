@@ -56,7 +56,6 @@ public class Game
         basement = new Room("in the basement");
         gameRoom = new Room("in the game room");
 
-        
         // initialise room exits
         foyer.setExit("east", diningHall);
         foyer.setExit("south", kitchen);
@@ -230,9 +229,9 @@ public class Game
     private boolean captureGhost()
     {
         if (currentRoom.getHaunted()) {
-            int random = randomGenerator.nextInt(50);
+            int random = randomGenerator.nextInt(49);
 
-            if (random >= 0 && random <= 10) {
+            if (random >= 0 && random <= 9) {
                 currentRoom.setHaunted(false);
                 ghostsCaptured++;
                 System.out.println("Nice job! You snagged the ghost!");

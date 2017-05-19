@@ -102,9 +102,9 @@ public class Room
     {
         if (searched == false) {
             searched = true;
-            int random = randomGenerator.nextInt(50);
+            int random = randomGenerator.nextInt(49);
 
-            if (random >= 0 && random <= 15) {
+            if (random >= 0 && random <= 14) {
                 haunted = true;
                 System.out.println("A spooky ghost appears! Quick capture it!");
             } else {
