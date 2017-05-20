@@ -108,7 +108,7 @@ public class Game
     }
 
     /**
-     * TODO: Write javadoc comment
+     * createGhosts() TODO: Write javadoc comment
      */
     private void createGhosts() {
         for (int i=0; i<ghostsToCapture; i++) {
@@ -208,7 +208,7 @@ public class Game
      * Here we print some stupid, cryptic message and a list of the 
      * command words.
      */
-    private void printHelp() 
+    private void printHelp() // TODO: Update Help Statement
     {
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the university.");
@@ -238,8 +238,8 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
             currentRoom.setSearched(false);
+            currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
     }
@@ -268,10 +268,14 @@ public class Game
             for (Ghost ghost : ghosts) {
                 if (ghost.getCurrentRoom().equals(currentRoom)) {
                     if (ghost.capture()) {
+                        ghost.setCaptured(true);
+                        ghost.setCurrentRoom(null);
                         currentRoom.setHaunted(false);
                         ghostsCaptured++;
 
                         System.out.println("Nice job! You snagged the ghost!");
+                        // TODO: 20/05/17 Print ghostsCaptured
+
                         return true;
                     } else { // TODO: 20/05/17 Refactor duplicate code
                         Room roomToHaunt;
@@ -286,15 +290,12 @@ public class Game
                         roomToHaunt = rooms.get(roomIndex);
                         ghost.setCurrentRoom(roomToHaunt);
                         roomToHaunt.setHaunted(true);
-                        
+                        ghost.setHidden(true);
+
                         System.out.println("The spirit escaped before you could capture it!");
                         System.out.println("You'll have to keep searching and try again.");
                         return false;
                     }
-                } else { // TODO: 19/05/17 Refactor duplicate code
-                    System.out.println("This room doesn't appear to be haunted.");
-                    System.out.println("Have you searched this room yet?");
-                    return false;
                 }
             }
         } else {
@@ -305,7 +306,7 @@ public class Game
         return false;
     }
 
-    public ArrayList<Room> getRooms() {
-        return rooms;
-    }
+    // TODO: 20/05/17 Implement Back (Stack) Function
+
+    // TODO: 20/05/17 Write public printExits() Function
 }
