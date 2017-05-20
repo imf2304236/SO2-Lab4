@@ -113,8 +113,9 @@ public class Game
     private void createGhosts() {
         for (int i=0; i<ghostsToCapture; i++) {
             Ghost ghostI = new Ghost();
-            int roomIndex = -1;
+
             Room roomToHaunt;
+            int roomIndex = -1;
 
             do {
                 roomIndex = randomGenerator.nextInt(rooms.size() - 1);
@@ -124,6 +125,7 @@ public class Game
 
             ghostI.setCurrentRoom(roomToHaunt);
             roomToHaunt.setHaunted(true);
+
             ghosts.add(ghostI);
         }
     }
@@ -169,6 +171,7 @@ public class Game
     private boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
+        boolean allGhostsCaptured = false;
 
         if(command.isUnknown()) {
             System.out.println("I don't know what you mean...");
@@ -184,13 +187,18 @@ public class Game
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
-        } else if (commandWord.equals("search")) {
+        }
+        else if (commandWord.equals("search")) {
             currentRoom.search();
-        } else if (commandWord.equals("capture")) {
-            captureGhost();
+        }
+        else if (commandWord.equals("capture")) {
+            captureAttempt();
+            if (ghostsCaptured == ghostsToCapture) {
+                allGhostsCaptured = true;
+            }
         }
         // else command not recognised.
-        return wantToQuit;
+        return (wantToQuit || allGhostsCaptured);
     }
 
     // implementations of user commands:
@@ -252,31 +260,52 @@ public class Game
         }
     }
 
-    private boolean captureGhost()
-    {
-        if (currentRoom.getHaunted()) {
-            int random = randomGenerator.nextInt(49);
+    /**
+     *
+     */
+    private boolean captureAttempt() {
+        if (currentRoom.getSearched() && currentRoom.getHaunted()) {
+            for (Ghost ghost : ghosts) {
+                if (ghost.getCurrentRoom().equals(currentRoom)) {
+                    if (ghost.capture()) {
+                        currentRoom.setHaunted(false);
+                        ghostsCaptured++;
 
-            if (random >= 0 && random <= 9) {
-                currentRoom.setHaunted(false);
-                ghostsCaptured++;
-                System.out.println("Nice job! You snagged the ghost!");
+                        System.out.println("Nice job! You snagged the ghost!");
+                        return true;
+                    } else { // TODO: 20/05/17 Refactor duplicate code
+                        Room roomToHaunt;
+                        int roomIndex = -1;
 
-                if (ghostsCaptured == ghostsToCapture) {
-                    return true;
-                } else {
+                        currentRoom.setHaunted(false);
+
+                        do {
+                            roomIndex = randomGenerator.nextInt(rooms.size() - 1);
+                        } while (rooms.get(roomIndex).getHaunted());
+
+                        roomToHaunt = rooms.get(roomIndex);
+                        ghost.setCurrentRoom(roomToHaunt);
+                        roomToHaunt.setHaunted(true);
+                        
+                        System.out.println("The spirit escaped before you could capture it!");
+                        System.out.println("You'll have to keep searching and try again.");
+                        return false;
+                    }
+                } else { // TODO: 19/05/17 Refactor duplicate code
+                    System.out.println("This room doesn't appear to be haunted.");
+                    System.out.println("Have you searched this room yet?");
                     return false;
                 }
-            } else {
-                currentRoom.setHaunted(false);
-                System.out.println("The spirit escaped before you could capture it!");
-                System.out.println("You'll have to keep searching and try again.");
-                return false;
             }
         } else {
             System.out.println("This room doesn't appear to be haunted.");
             System.out.println("Have you searched this room yet?");
             return false;
         }
+        return false;
+    }
+
+    public ArrayList<Room> getRooms() {
+        return rooms;
     }
 }
