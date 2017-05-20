@@ -24,7 +24,7 @@ public class Ghost {
     public boolean capture() {
         int random = randomGen.nextInt(49);
 
-        if (random >= 0 && random <= 9) {
+        if (random >= 0 && random <= 19) {
             return true;
         }
         else {
