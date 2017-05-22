@@ -1,5 +1,16 @@
 import java.util.Random;
 /**
+ * This class is part of the "Ghostbusters" application.
+ * "Ghostbusters" is a very simple, text based adventure game.  Users
+ * must explore a haunted mansion to find and capture ghosts to win the game.
+ *
+ * This class represents a Ghost object which haunts a particular room
+ * and can be captured by the player.
+ *
+ * @author  Ian Fennie
+ * @version 2017.05.22
+ *
+ *
  * Class Ghost - a ghost in the game "Ghostbusters".
  */
 public class Ghost {
