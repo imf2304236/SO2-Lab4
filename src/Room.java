@@ -95,8 +95,9 @@ public class Room
     }
 
     /**
-     * ""
-     * @return
+     * Search the room.
+     * If the room's state defines it as searched, it will not be searched again.
+     * If the room is not searched, the room's haunted state will be revealed to the player.
      */
     public void search()
     {
@@ -112,12 +113,28 @@ public class Room
         }
     }
 
+    /**
+     * Return the room's searched state
+     * @return true if searched, false otherwise
+     */
     public boolean getSearched() { return searched; }
 
+    /**
+     * Update the room's searched state
+     * @param bool true to be searched, false otherwise
+     */
     public void setSearched(boolean bool) { searched = bool; }
 
+    /**
+     * Update the room's haunted state
+     * @param bool true to be haunted, false otherwise
+     */
     public void setHaunted(boolean bool) { haunted = bool; }
 
+    /**
+     * Return the room's haunted state
+     * @return true if haunted, false otherwise
+     */
     public boolean getHaunted() { return haunted; }
 }
 

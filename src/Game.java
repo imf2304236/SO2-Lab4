@@ -115,25 +115,13 @@ public class Game
     private void createGhosts() {
         for (int i=0; i<ghostsToCapture; i++) {
             Ghost ghostI = new Ghost();
-
-            Room roomToHaunt;
-            int roomIndex = -1;
-
-            do {
-                roomIndex = randomGenerator.nextInt(rooms.size() - 1);
-            } while (rooms.get(roomIndex).getHaunted());
-
-            roomToHaunt = rooms.get(roomIndex);
-
-            ghostI.setCurrentRoom(roomToHaunt);
-            roomToHaunt.setHaunted(true);
-
+            moveGhostRandom(ghostI);
             ghosts.add(ghostI);
         }
     }
 
     /**
-     *  Main play routine. Loops until end of play.
+     *  Main play routine. Loops until all ghosts are captured.
      */
     public void play()
     {            
@@ -149,7 +137,7 @@ public class Game
             finished = processCommand(command);
         }
 
-        if (ghostsCaptured == 5) {
+        if (ghostsCaptured == ghostsToCapture) {
             System.out.println("Congratulations! You've captured all of the");
             System.out.println("ghosts and restored peace to the mansion and");
             System.out.println("souls which now rest. Until next time, you");
@@ -218,7 +206,7 @@ public class Game
 
     /**
      * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
+     * Here we print a short message and a list of the
      * command words.
      */
     private void printHelp()
@@ -231,8 +219,9 @@ public class Game
     }
 
     /** 
-     * Try to in to one direction. If there is an exit, enter the new
+     * Try to move to a specific direction. If there is an exit, enter the new
      * room, otherwise print an error message.
+     * When a room is left, its searched state reverts to unsearched.
      */
     private void goRoom(Command command) 
     {
@@ -285,7 +274,29 @@ public class Game
     }
 
     /**
-     *
+     * Move a ghost to a random unhaunted room
+     * @param ghost the ghost to move
+     */
+    private void moveGhostRandom(Ghost ghost) {
+        Room roomToHaunt;
+        int roomIndex = -1;
+
+        do {
+            roomIndex = randomGenerator.nextInt(rooms.size() - 1);
+        } while (rooms.get(roomIndex).getHaunted());
+
+        roomToHaunt = rooms.get(roomIndex);
+        ghost.setCurrentRoom(roomToHaunt);
+        roomToHaunt.setHaunted(true);
+        ghost.setHidden(true);
+    }
+
+    /**
+     * Attempt to capture a ghost. If the room has not been searched or if it
+     * is not haunted, the attempt is unsuccessful. Not all attempts to capture
+     * are successful, and if the player fails once, the ghost is moved to
+     * another room at random and the room is no longer haunted.
+     * @return true if the ghost is successfully captured, false otherwise
      */
     private boolean captureAttempt() {
         if (currentRoom.getSearched() && currentRoom.getHaunted()) {
@@ -303,19 +314,8 @@ public class Game
 
                         return true;
                     } else {
-                        Room roomToHaunt;
-                        int roomIndex = -1;
-
+                        moveGhostRandom(ghost);
                         currentRoom.setHaunted(false);
-
-                        do {
-                            roomIndex = randomGenerator.nextInt(rooms.size() - 1);
-                        } while (rooms.get(roomIndex).getHaunted());
-
-                        roomToHaunt = rooms.get(roomIndex);
-                        ghost.setCurrentRoom(roomToHaunt);
-                        roomToHaunt.setHaunted(true);
-                        ghost.setHidden(true);
 
                         System.out.println("The spirit escaped before you could capture it!");
                         System.out.println("You'll have to keep searching and try again.");
@@ -330,4 +330,6 @@ public class Game
         }
         return false;
     }
+
+
 }
