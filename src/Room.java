@@ -4,15 +4,16 @@ import java.util.Random;
 /**
  * Class Room - a room in an adventure game.
  *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
+ * This class is part of the "Ghostbusters" application.
+ * "Ghostbusters" is a very simple, text based adventure game.  Users
+ * must explore a haunted mansion to find and capture ghosts to win the game.
  *
  * A "Room" represents one location in the scenery of the game.  It is 
  * connected to other rooms via exits.  For each existing exit, the room 
  * stores a reference to the neighboring room.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Ian Fennie
+ * @version 2017.05.22
  */
 
 public class Room 
@@ -95,8 +96,9 @@ public class Room
     }
 
     /**
-     * ""
-     * @return
+     * Search the room.
+     * If the room's state defines it as searched, it will not be searched again.
+     * If the room is not searched, the room's haunted state will be revealed to the player.
      */
     public void search()
     {
@@ -112,12 +114,28 @@ public class Room
         }
     }
 
+    /**
+     * Return the room's searched state
+     * @return true if searched, false otherwise
+     */
     public boolean getSearched() { return searched; }
 
+    /**
+     * Update the room's searched state
+     * @param bool true to be searched, false otherwise
+     */
     public void setSearched(boolean bool) { searched = bool; }
 
+    /**
+     * Update the room's haunted state
+     * @param bool true to be haunted, false otherwise
+     */
     public void setHaunted(boolean bool) { haunted = bool; }
 
+    /**
+     * Return the room's haunted state
+     * @return true if haunted, false otherwise
+     */
     public boolean getHaunted() { return haunted; }
 }
 

@@ -1,6 +1,7 @@
 /**
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
+ * This class is part of the "Ghostbusters" application.
+ * "Ghostbusters" is a very simple, text based adventure game.  Users
+ * must explore a haunted mansion to find and capture ghosts to win the game.
  *
  * This class holds information about a command that was issued by the user.
  * A command currently consists of two strings: a command word and a second
@@ -13,8 +14,8 @@
  *
  * If the command had only one word, then the second word is <null>.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Ian Fennie
+ * @version 2017.05.22
  */
 
 public class Command
