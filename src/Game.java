@@ -110,7 +110,7 @@ public class Game
     }
 
     /**
-     * createGhosts() TODO: Write javadoc comment
+     * Create ghosts and distribute them among the rooms.
      */
     private void createGhosts() {
         for (int i=0; i<ghostsToCapture; i++) {
@@ -133,7 +133,7 @@ public class Game
     }
 
     /**
-     *  Main play routine.  Loops until end of play.
+     *  Main play routine. Loops until end of play.
      */
     public void play()
     {            
@@ -148,7 +148,15 @@ public class Game
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye."); // TODO: 17/05/17 Change finished message 
+
+        if (ghostsCaptured == 5) {
+            System.out.println("Congratulations! You've captured all of the");
+            System.out.println("ghosts and restored peace to the mansion and");
+            System.out.println("souls which now rest. Until next time, you");
+            System.out.println("know who to call... ;)");
+        }
+
+        System.out.println("Thank you for playing.  Good bye.");
     }
 
     /**
@@ -213,10 +221,10 @@ public class Game
      * Here we print some stupid, cryptic message and a list of the 
      * command words.
      */
-    private void printHelp() // TODO: Update Help Statement
+    private void printHelp()
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("You are a Ghostbuster. Find the ghosts and");
+        System.out.println("bring peace to the mansion.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -290,10 +298,11 @@ public class Game
                         ghostsCaptured++;
 
                         System.out.println("Nice job! You snagged the ghost!");
-                        // TODO: 20/05/17 Print ghostsCaptured
+                        System.out.println(ghostsCaptured + " down.");
+                        System.out.println((ghostsToCapture - ghostsCaptured) + " to go...");
 
                         return true;
-                    } else { // TODO: 20/05/17 Refactor duplicate code
+                    } else {
                         Room roomToHaunt;
                         int roomIndex = -1;
 
@@ -321,8 +330,4 @@ public class Game
         }
         return false;
     }
-
-    // TODO: 20/05/17 Implement Back (Stack) Function
-
-    // TODO: 20/05/17 Write public printExits() Function
 }
