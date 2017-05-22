@@ -1,7 +1,6 @@
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Stack;
 /**
  *  This class is the main class of the "Ghostbusters" application.
  *  "ghostbusters" is a very simple, text based adventure game.  Users
@@ -27,6 +26,8 @@ public class Game
     private int ghostsCaptured;
     private int ghostsToCapture;
     private Random randomGenerator;
+    private Stack<Room> roomStack;
+
         
     /**
      * Create the game and initialise its internal map.
@@ -41,6 +42,7 @@ public class Game
         randomGenerator = new Random();
         createRooms();
         createGhosts();
+        roomStack = new Stack<Room>();
     }
 
     /**
@@ -197,6 +199,9 @@ public class Game
                 allGhostsCaptured = true;
             }
         }
+        else if (commandWord.equals("back")) {
+            goRoom(new Command("go", "back"));
+        }
         // else command not recognised.
         return (wantToQuit || allGhostsCaptured);
     }
@@ -230,9 +235,20 @@ public class Game
         }
 
         String direction = command.getSecondWord();
+        Room nextRoom = null;
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        if (direction.equals("back")) {
+            if (roomStack.size() == 0) {
+                System.out.println("You cannot go further back. Try going forward!");
+                return;
+            } else {
+                nextRoom = roomStack.pop();
+            }
+        } else {
+            nextRoom = currentRoom.getExit(direction);
+            roomStack.push(currentRoom);
+        }
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
